@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2">
+  <class name="Loba.Modelo.Entidades.Subcategoria,Loba.Modelo" table="tbl_subcategoria" lazy="false">
+    <id name="Id" type="int">
+      <column name="id"/>
+      <generator class="identity"/>
+    </id>
+    <property name="Nombre" type="string">
+      <column name="nombre"/>
+    </property>
+  </class>
+</hibernate-mapping>

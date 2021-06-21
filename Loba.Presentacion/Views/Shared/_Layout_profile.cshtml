@@ -1,0 +1,19 @@
+﻿@{
+    ViewBag.Title = "_Layout_profile";
+}
+@model Loba.Presentacion.Models.ProfileMiniModel
+<div class="media" style="min-width:260px">
+    <div class="pull-left" style="width: 73px;color: #9579c9;">
+        <div style="border-radius: 37px  36px;background-clip: padding-box;background-color: #9579c9;box-shadow: inset 0 0 4px rgba(0,0,0,.2);color: #fff;margin: 0 17px 7px 0;width: 73px;height: 73px;overflow: hidden;line-height: 73px;font-size: 30px;text-align: center;">
+        	<span id="mbrBA">@Model.PorMejResp</span>%
+        </div>
+        <div style="text-align: center;font-size: 11px;font-weight: bold;">MEJORES RESPUESTAS</div>
+    </div>
+    <div class="media-body">
+        <h4 class="media-heading">@Model.Usuario.Nombre</h4>
+        <small>Miembro desde: <strong style="text-transform:capitalize">@Model.Usuario.FechaRegistro.ToString("MMMM dd, yyyy")</strong></small><br>
+        <small>Total respuestas: <strong>@Model.Respuestas</strong></small><br>
+        <!--small>String:<strong> Attr</strong></!--small><br>
+        <small>String:<strong> Attr</strong></small-->
+    </div>
+</div>

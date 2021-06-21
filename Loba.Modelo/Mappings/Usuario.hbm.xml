@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2">
+  <class name="Loba.Modelo.Entidades.Usuario,Loba.Modelo" table="tbl_usuario" lazy="false">
+    <id name="Id" type="int">
+      <column name="id"/>
+      <generator class="identity"/>
+    </id>
+    <property name="Nombre" type="string">
+      <column name="nombre"/>
+    </property>
+    <property name="Apellidos" type="string">
+      <column name="apellidos"/>
+    </property>
+    <property name="Correo" type="string">
+      <column name="correo"/>
+    </property>
+    <property name="Nombre_usuario" type="string">
+      <column name="nombre_usuario"/>
+    </property>
+    <property name="Contrasena" type="string">
+      <column name="contrasena"/>
+    </property>
+    <property name="FechaRegistro" type="datetime">
+      <column name="fechaRegistro"/>
+    </property>
+    <property name="FechaNacimiento" type="datetime">
+      <column name="fechaNacimiento"/>
+    </property>
+    <property name="Sexo">
+      <column name="sexo"/>
+    </property>
+    <property name="Path_imagen" type="string">
+      <column name="path_imagen"/>
+    </property>
+  </class>
+</hibernate-mapping>

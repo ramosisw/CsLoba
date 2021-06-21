@@ -1,0 +1,11 @@
+﻿@model Loba.Modelo.Entidades.Categoria
+<select class="form-control" id="id_categoria" name="id_categoria">
+    @foreach (var item in Model.obtenerTodas()) {
+        if (Model.Id==item.Id) {
+            <option value="@item.Id" selected="selected">@item.Nombre</option>
+        } else {
+            <option value="@item.Id">@item.Nombre</option>
+        }
+        
+    }
+</select>

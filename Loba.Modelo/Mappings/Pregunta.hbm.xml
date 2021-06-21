@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2">
+  <class name="Loba.Modelo.Entidades.Pregunta,Loba.Modelo" table="tbl_pregunta" lazy="false">
+    <id name="Id" type="int">
+      <column name="id"/>
+      <generator class="identity"/>
+    </id>
+    <property name="Titulo" type="string">
+      <column name="titulo"/>
+    </property>
+    <property name="Descripcion" type="string">
+      <column name="descripcion"/>
+    </property>
+    <property name="Fecha" type="datetime">
+      <column name="fecha"/>
+    </property>
+
+    
+    <many-to-one name="Usuario" class="Loba.Modelo.Entidades.Usuario" column="id_usuario"/>
+    <many-to-one name="Categoria" class="Loba.Modelo.Entidades.Categoria" column="id_categoria"/>
+    <many-to-one name="Subcategoria" class="Loba.Modelo.Entidades.Subcategoria" column="id_subcategoria"/>
+    <many-to-one name="MejorRespuesta" class="Loba.Modelo.Entidades.MejorRespuesta" column="id_mejor_respuesta" cascade="all" />
+    <list name="Respuestas" cascade="all" table="tbl_respuestas" lazy="false">
+      <key column="id_pregunta" not-null="true"></key>
+      <index column="position"></index>
+      <one-to-many  class="Loba.Modelo.Entidades.Respuesta" ></one-to-many>
+    </list>
+    <list name="Actualizaciones" cascade="all" table="tbl_actualizaciones" lazy="false">
+      <key column="id_pregunta" not-null="true"></key>
+      <index column="position"></index>
+      <one-to-many  class="Loba.Modelo.Entidades.Actualizacion" ></one-to-many>
+    </list>
+  </class>
+</hibernate-mapping>

@@ -1,0 +1,57 @@
+﻿@{
+    ViewBag.Title = "QuestionView";
+}
+
+@model Loba.Modelo.Entidades.Pregunta
+<!-- Contenedor central -->
+<div class="col-md-7 col-lg-7">
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <div class="media">
+                <a class="pull-left">
+                    <img src="@Url.Content(Model.Usuario.Path_imagen)" width="64" height="64" id="yui_3_9_1_13_1397958282095_34" />
+                </a>
+                <div class="media-body">
+                    <h3>@Model.Titulo
+                        @if (Model.Usuario.Id.ToString().Equals(string.Concat(Session["userID"]))) {
+                            <a href="#"><span class="glyphicon glyphicon-edit"></span></a>
+                            <a href="#"><span class="glyphicon glyphicon-remove"></span></a>
+                        }
+                    </h3>
+                    <p>@Model.Descripcion</p>
+                    @foreach (var act in Model.Actualizaciones) {
+                        <p><strong>Actualización: </strong>@act.Contenido</p>
+                    }
+                    <form action="/Pregunta/Editar" method="post" role="form">
+                        <h5 class="text-info">Agrega tu Actualizacion:</h5>
+                        <input type="hidden" name="id" value="@Model.Id">
+                        <textarea class="form-control" rows="3" name="contenido"></textarea>
+                        <br>
+                        <button type="submit" class="btn btn-info btn-sm">Actualizar</button>
+                        <a href="~/Pregunta/Index/@Model.Id" class="btn btn-default btn-sm">Cancelar</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- FIN Contenedor central -->
+<!-- contenedor derecho -->
+<div class="col-md-3 col-lg-3">
+    <div class="panel panel-primary">
+        <div class="panel-body bg-primary">
+            <form action="~/Pregunta/Nueva" method="post" role="form">
+                <label>
+                    <h4><span class="glyphicon glyphicon-comment"></span>Haz una Pregunta</h4>
+                </label>
+                <div class="input-group">
+                    <input type="text" class="form-control" name="Titulo" id="Titulo">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="submit">OK!</button>
+                    </span>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- FIN contenedor derecho -->

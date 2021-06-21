@@ -1,0 +1,393 @@
+﻿@{
+    ViewBag.Title = "QuestionView";
+    bool pregunto=false;
+}
+@using Loba.Modelo.Enumeradores;
+@model Loba.Presentacion.Models.PreguntaModel
+<!-- Contenedor central -->
+<div class="col-md-7 col-lg-7">
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <a class="text-info" href="~/Home/Index?categoria=@Model.Pregunta.Categoria.Id">@Model.Pregunta.Categoria.Nombre</a> &gt; 
+            <a class="text-info" href="~/Home/Index?subcategoria=@Model.Pregunta.Subcategoria.Id">@Model.Pregunta.Subcategoria.Nombre</a>
+            <div class="media">
+                <a class="pull-left">
+                    <img  class="user" data-user-id="@Model.Pregunta.Usuario.Id" src="@Url.Content(Model.Pregunta.Usuario.Path_imagen)" width="64" height="64" />
+                </a>
+                <div class="media-body">
+                    <h3>@Model.Pregunta.Titulo
+                        @if (Model.Pregunta.Usuario.Id.ToString().Equals(string.Concat(Session["userID"]))) {
+                            <a href="~/Pregunta/Editar?id=@Model.Pregunta.Id"><span class="glyphicon glyphicon-edit"></span></a>
+                            <a href="#delete" data-toggle="modal" data-target="#delete"><span class="glyphicon glyphicon-remove"></span></a>
+                        }
+                    </h3>
+                    <p>Pregunta echa por: <a href="#" class="text-info">@Model.Pregunta.Usuario.Nombre_usuario</a></p>
+                    <p>@Model.Pregunta.Descripcion</p>
+                    @foreach (var act in Model.Pregunta.Actualizaciones) {
+                        <p><strong>Actualización: </strong>@act.Contenido</p>
+                    }
+
+                </div>
+            </div>
+            @if (Model.Pregunta.MejorRespuesta!=null) {
+                int vpos=0;
+                int vneg=0;
+                foreach (var cal in Model.Pregunta.MejorRespuesta.Respuesta.Calificaciones) {
+                    if (cal.TipoVoto==TipoVoto.NEGATIVO) {
+                        vneg++;
+                    } else if (cal.TipoVoto==TipoVoto.POSITIVO) {
+                        vpos++;
+                    }
+                }
+                <h4>Mejor Respuesta <small class="bg-info text-primary">Selección del preguntador</small></h4>
+                <div class="media">
+                    <a class="pull-left" href="#">
+                        <img class="media-object  user"  data-user-id="@Model.Pregunta.MejorRespuesta.Respuesta.Usuario.Id" src="@Url.Content(Model.Pregunta.MejorRespuesta.Respuesta.Usuario.Path_imagen)" alt="@Model.Pregunta.MejorRespuesta.Respuesta.Usuario.Nombre_usuario" width="64" height="64"/>
+                    </a>
+                    <div class="media-body">
+                        <small><a class="text-info" href="#">@Model.Pregunta.MejorRespuesta.Respuesta.Usuario.Nombre</a> respondio hace 
+                                        @{
+                TimeSpan ts = DateTime.Now - Model.Pregunta.MejorRespuesta.Respuesta.Fecha;
+                var hace="";
+                if (ts.Days>=1) {
+                    hace=ts.Days.ToString() +" dias";
+                } else if (ts.Hours>=1) {
+                    hace=ts.Hours.ToString() +" hrs";
+                } else if (ts.Minutes>=1) {
+                    hace=ts.Minutes.ToString() +" mins";
+                } else {
+                    hace=ts.Seconds.ToString() + " segs";
+                }
+                                        }
+                            @hace
+                        </small>
+
+
+                        <p>@Model.Pregunta.MejorRespuesta.Respuesta.Cuerpo</p>
+                        <strong>Calificación y comentarios del preguntador:</strong>
+                        <div>
+                            @for (int i=1; i<=Model.Pregunta.MejorRespuesta.Valoracion; i++) {
+                                <span class="glyphicon glyphicon-star text-success"></span>
+                            }
+                            @for (int i=1; i<=5-Model.Pregunta.MejorRespuesta.Valoracion; i++) {
+                                <span class="glyphicon glyphicon-star-empty"></span>
+                            }
+                        </div>
+                        @Model.Pregunta.MejorRespuesta.Comentario
+                        <p>
+                            <a href="~/Pregunta/RespuestaUp?r_id=@Model.Pregunta.MejorRespuesta.Respuesta.Id&p_id=@Model.Pregunta.Id" class="btn btn-success btn-xs"><span class="glyphicon glyphicon-thumbs-up"></span> @vpos</a>
+                            <a href="~/Pregunta/RespuestaDown?r_id=@Model.Pregunta.MejorRespuesta.Respuesta.Id&p_id=@Model.Pregunta.Id" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-thumbs-down"></span> @vneg</a>
+                            <!--if (Model.Usuario!=null) {-->
+                                <a href="javascript:void(0)" class="btn btn-info btn-xs" data-toggle="collapse" data-target="#comentario-@Model.Pregunta.MejorRespuesta.Id"><span class="glyphicon glyphicon-comment"></span> Comentar  
+                                @if (Model.Pregunta.MejorRespuesta.Respuesta.Comentarios.Count()>0) {
+                                    <span>( @Model.Pregunta.MejorRespuesta.Respuesta.Comentarios.Count() )</span>
+                                }
+                                </a>
+                                <!--if (Model.Usuario.Id==Model.Pregunta.MejorRespuesta.Respuesta.Usuario.Id) {
+                                <a href="javascript:void(0)" class="btn btn-primary btn-xs" data-toggle="collapse" data-target="#edit-@Model.Pregunta.MejorRespuesta.Respuesta.Id"><span class="glyphicon glyphicon-edit"></span> Editar</a>
+                                <a href="javascript:void(0)" class="btn btn-danger btn-xs" data-toggle="collapse" data-target="#delete-@Model.Pregunta.MejorRespuesta.Respuesta.Id"><span class="glyphicon glyphicon-remove"></span> Borrar</a>
+                                }-->
+                            <!--}-->
+                        </p>
+                        
+                            <div id="comentario-@Model.Pregunta.MejorRespuesta.Id" class="collapse">
+                               
+                                @foreach (var comm in Model.Pregunta.MejorRespuesta.Respuesta.Comentarios) {
+                                    <div class="media">
+                                        <a class="pull-left">
+                                            <img src="@Url.Content(comm.Usuario.Path_imagen)" width="64" height="64" />
+                                        </a>
+                                        <div class="media-body">
+                                            <small><a class="text-info" href="#">@comm.Usuario.Nombre</a> comento hace 
+                                        @{
+                                    ts = DateTime.Now - comm.Fecha;
+
+                                    if (ts.Days>=1) {
+                                        hace=ts.Days.ToString() +" dias";
+                                    } else if (ts.Hours>=1) {
+                                        hace=ts.Hours.ToString() +" hrs";
+                                    } else if (ts.Minutes>=1) {
+                                        hace=ts.Minutes.ToString() +" mins";
+                                    } else {
+                                        hace=ts.Seconds.ToString() + " segs";
+                                    }
+                                        }
+                                                @hace
+                                            </small>
+                                            <p>@comm.Contenido</p>
+                                        </div>
+                                    </div>
+                                
+                                }
+                                @if (Model.Usuario!=null) {
+                                <div class="media">
+                                    <a class="pull-left">
+                                        <img src="@Url.Content(Model.Usuario.Path_imagen)" width="64" height="64" />
+                                    </a>
+                                    <div class="media-body">
+                                        <form class="form" action="/Pregunta/ComentarRespuesta" method="post" role="form" name="form-comentar">
+                                            <input type="hidden" name="r_id" value="@Model.Pregunta.MejorRespuesta.Respuesta.Id">
+                                            <section id="messages-@Model.Pregunta.MejorRespuesta.Respuesta.Id"></section>
+                                            <div class="form-group">
+                                                <textarea class="form-control" rows="3" name="contenido" placeholder="Escribe tu comentario..."></textarea>
+                                            </div>
+                                            <div class="form-group pull-right">
+                                                <button type="submit" class="btn btn-info btn-sm">Enviar</button>
+                                                <a href="javascript:void(0)" class="btn btn-default btn-sm" data-toggle="collapse" data-target="#comentario-@Model.Pregunta.MejorRespuesta.Id">Cancelar</a>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                }else{
+                                    <div class="media">
+                                    <a class="pull-left">
+                                        <img src="~/Images/anonymous.png" width="64" height="64" />
+                                    </a>
+                                    <div class="media-body">
+                                            <div class="form-group">
+                                                <a href="~/Home/Login?p_id=@Model.Pregunta.Id" class="btn btn-info btn-sm">Iniciar Sesion</a>
+                                                <a href="javascript:void(0)" class="btn btn-default btn-sm" data-toggle="collapse" data-target="#comentario-@Model.Pregunta.MejorRespuesta.Id">Cancelar</a>
+                                            </div>                                        
+                                    </div>
+                                </div>
+                                }
+                            </div>
+                    </div>
+                </div>
+            }
+
+            @if (Model.Pregunta.Respuestas!=null) {
+                int resp=Model.Pregunta.Respuestas.Count();
+                if (Model.Pregunta.MejorRespuesta!=null) {
+                    resp--;
+                }
+                <h4>Respuestas (@resp)</h4>
+            } else {
+                <h4>Respuestas (@Model.Pregunta.Respuestas.Count())</h4>
+            }
+            @foreach (var resp in Model.Pregunta.Respuestas) {
+                int vpos=0;
+                int vneg=0;
+                foreach (var cal in resp.Calificaciones) {
+                    if (cal.TipoVoto==TipoVoto.NEGATIVO) {
+                        vneg++;
+                    } else if (cal.TipoVoto==TipoVoto.POSITIVO) {
+                        vpos++;
+                    }
+                }
+                if (Model.Usuario!=null && Model.Usuario.Id==resp.Usuario.Id && !pregunto) {
+                    pregunto=true;
+                }
+                if (Model.Pregunta.MejorRespuesta!=null && resp.Id==Model.Pregunta.MejorRespuesta.Respuesta.Id) {
+                    continue;
+                }                
+                <div class="media">
+                    <a class="pull-left" href="#">
+                        <img class="media-object user" data-user-id="@resp.Usuario.Id" src="@Url.Content(resp.Usuario.Path_imagen)" alt="@resp.Usuario.Nombre_usuario" width="64" height="64"/>
+                    </a>
+                    <div class="media-body">
+                        <small><a class="text-info" href="#">@resp.Usuario.Nombre</a> respondio hace 
+                                        @{
+                TimeSpan ts = DateTime.Now - resp.Fecha;
+                var hace="";
+                if (ts.Days>=1) {
+                    hace=ts.Days.ToString() +" dias";
+                } else if (ts.Hours>=1) {
+                    hace=ts.Hours.ToString() +" hrs";
+                } else if (ts.Minutes>=1) {
+                    hace=ts.Minutes.ToString() +" mins";
+                } else {
+                    hace=ts.Seconds.ToString() + " segs";
+                }
+                                        }
+                            @hace
+                        </small>
+                        <p>@resp.Cuerpo</p>
+                        <p>
+                            @if (Model.Pregunta.Usuario.Id.ToString().Equals(string.Concat(Session["userID"])) &&  Model.Pregunta.MejorRespuesta==null) {
+                                <a href="~/Pregunta/MejorRespuesta?r_id=@resp.Id&p_id=@Model.Pregunta.Id" class="btn btn-info btn-xs">Mejor Respuesta</a>
+                            }
+                            <a href="~/Pregunta/RespuestaUp?r_id=@resp.Id&p_id=@Model.Pregunta.Id" class="btn btn-success btn-xs"><span class="glyphicon glyphicon-thumbs-up"></span> @vpos</a>
+                            <a href="~/Pregunta/RespuestaDown?r_id=@resp.Id&p_id=@Model.Pregunta.Id" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-thumbs-down"></span> @vneg</a>
+                            
+                                <a href="javascript:void(0)" class="btn btn-info btn-xs" data-toggle="collapse" data-target="#comentario-@resp.Id"><span class="glyphicon glyphicon-comment"></span> Comentar  
+                                @if (resp.Comentarios.Count()>0) {
+                                    <span>( @resp.Comentarios.Count() )</span>
+                                }
+                                </a>
+                                @if (Model.Usuario != null && Model.Usuario.Id == resp.Usuario.Id) {
+                                <a href="javascript:void(0)" class="btn btn-primary btn-xs"  data-toggle="collapse" data-target="#edit-@resp.Id"><span class="glyphicon glyphicon-edit"></span> Editar</a>
+                                <a href="javascript:void(0)" class="btn btn-danger btn-xs" data-toggle="collapse" data-target="#delete-@resp.Id"><span class="glyphicon glyphicon-remove"></span> Borrar</a>
+                                }
+                            
+                        </p>
+                        @if (Model.Usuario!=null && Model.Usuario.Id==resp.Usuario.Id) {
+                            <div id="edit-@resp.Id" class="collapse">
+                                <div class="media">
+                                    <a class="pull-left">
+                                        <img src="@Url.Content(Model.Usuario.Path_imagen)" width="64" height="64" />
+                                    </a>
+                                    <div class="media-body">
+                                        <form class="form" action="/Pregunta/EditarRespuesta" method="post" role="form" name="form-edit-resp">
+                                            <input type="hidden" name="Id" value="@resp.Id">
+                                            <section id="msgRespEdit-@resp.Id"></section>
+                                            <div class="form-group">
+                                                <textarea class="form-control" rows="3" name="Cuerpo" placeholder="Escribe tu respuesta...">@resp.Cuerpo</textarea>
+                                            </div>
+                                            <div class="form-group">
+                                                <button type="submit" class="btn btn-info btn-sm">Enviar</button>
+                                                <a href="javascript:void(0)" class="btn btn-default btn-sm" data-toggle="collapse" data-target="#edit-@resp.Id">Cancelar</a>
+                                            </div>
+
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="delete-@resp.Id" class="collapse">
+                                <div class="media">
+                                    <a class="pull-left">
+                                        <img src="@Url.Content(Model.Usuario.Path_imagen)" width="64" height="64" />
+                                    </a>
+                                    <div class="media-body">
+                                        <h4>Elimar esta Respuesta?</h4>
+                                            <div class="form-group">
+                                                <a href="~/Pregunta/EliminarRespuesta?r_id=@resp.Id&p_id=@Model.Pregunta.Id" class="btn btn-info btn-sm">Si</a>
+                                                <a href="javascript:void(0)" class="btn btn-default btn-sm" data-toggle="collapse" data-target="#delete-@resp.Id">No</a>
+                                            </div>
+                                    </div>
+                                </div>
+                            </div>
+                            }
+                            <div id="comentario-@resp.Id" class="collapse">
+                                @foreach (var comm in resp.Comentarios) {
+                                    <div class="media">
+                                        <a class="pull-left">
+                                            <img src="@Url.Content(resp.Usuario.Path_imagen)" width="64" height="64" />
+                                        </a>
+                                        <div class="media-body">
+                                            <small><a class="text-info" href="#">@comm.Usuario.Nombre</a> comento hace 
+                                        @{
+                                    ts = DateTime.Now - comm.Fecha;
+
+                                    if (ts.Days>=1) {
+                                        hace=ts.Days.ToString() +" dias";
+                                    } else if (ts.Hours>=1) {
+                                        hace=ts.Hours.ToString() +" hrs";
+                                    } else if (ts.Minutes>=1) {
+                                        hace=ts.Minutes.ToString() +" mins";
+                                    } else {
+                                        hace=ts.Seconds.ToString() + " segs";
+                                    }
+                                        }
+                                                @hace
+                                            </small>
+                                            <p>@comm.Contenido</p>
+                                        </div>
+                                    </div>
+                                }
+                                @if(Model.Usuario!=null){
+                                <div class="media">
+                                    <a class="pull-left">
+                                        <img src="@Url.Content(Model.Usuario.Path_imagen)" width="64" height="64" />
+                                    </a>
+                                    <div class="media-body">
+                                        <form class="form" action="/Pregunta/ComentarRespuesta" method="post" role="form" name="form-comentar">
+                                            <input type="hidden" name="r_id" value="@resp.Id">
+                                            <section id="messages-@resp.Id"></section>
+                                            <div class="form-group">
+                                                <textarea class="form-control" rows="3" name="contenido" placeholder="Escribe tu comentario..."></textarea>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <button type="submit" class="btn btn-info btn-sm">Enviar</button>
+                                                <a href="javascript:void(0)" class="btn btn-default btn-sm" data-toggle="collapse" data-target="#comentario-@resp.Id">Cancelar</a>
+                                            </div>
+
+                                        </form>
+                                    </div>
+                                </div>
+                                }else{
+                                    <div class="media">
+                                    <a class="pull-left">
+                                        <img src="~/Images/anonymous.png" width="64" height="64" />
+                                    </a>
+                                    <div class="media-body">
+                                            <div class="form-group">
+                                                <a href="~/Home/Login?p_id=@Model.Pregunta.Id" class="btn btn-info btn-sm">Iniciar Sesion</a>
+                                                <a href="javascript:void(0)" class="btn btn-default btn-sm" data-toggle="collapse" data-target="#comentario-@resp.Id">Cancelar</a>
+                                            </div>                                        
+                                    </div>
+                                </div>
+                                }
+                            </div>
+                        
+                    </div>
+                </div>
+            }
+
+            @if (Model.Usuario!=null && Model.Usuario.Id!=Model.Pregunta.Usuario.Id && !pregunto) {                
+                
+                <div class="media well">
+                    <a class="pull-left" href="#">
+                        <img class="media-object" src="@Url.Content(Model.Usuario.Path_imagen)" alt="@Model.Usuario.Nombre_usuario" width="64" height="64">
+                    </a>
+                    <div class="media-body">
+                        <form action="~/Pregunta/Responder" method="post" role="form" name="form-respuesta">
+                            <section id="msgResp-@Model.Pregunta.Id"></section>
+                            <h5 class="text-info">Agrega tu Respuesta:</h5>
+                            <input type="hidden" name="Id" value="@Model.Pregunta.Id" />
+                            <textarea class="form-control" rows="3" name="Cuerpo"></textarea>
+                            <br />
+                            <button type="submit" class="btn btn-info btn-sm">Responder</button>
+                        </form>
+
+                    </div>
+                </div>
+            } else if (Model.Usuario==null && !pregunto) {
+                <div class="media well">
+                    <div class="media-body">
+                        <a  href="~/Home/Login?p_id=@Model.Pregunta.Id" class="btn btn-info btn-sm">Responder</a>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+<!-- FIN Contenedor central -->
+<!-- contenedor derecho -->
+<div class="col-md-3 col-lg-3">
+    <div class="panel panel-primary">
+        <div class="panel-body bg-primary">
+            <form action="~/Pregunta/Nueva" method="post" role="form">
+                <label>
+                    <h4><span class="glyphicon glyphicon-comment"></span>Haz una Pregunta</h4>
+                </label>
+                <div class="input-group">
+                    <input type="text" class="form-control" name="Titulo" id="Titulo">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="submit">OK!</button>
+                    </span>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- Modal Delete-->
+<div class="modal fade" id="delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Desea borrar esta Pregunta?</h4>
+            </div>
+            <div class="modal-body">
+                <h3 class="text-info">@Model.Pregunta.Titulo</h3>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+                <a href="~/Pregunta/Eliminar?id=@Model.Pregunta.Id" class="btn btn-danger">Borrar</a>
+            </div>
+        </div>
+    </div>
+</div>
+

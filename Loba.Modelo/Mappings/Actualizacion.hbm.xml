@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2">
+  <class name="Loba.Modelo.Entidades.Actualizacion,Loba.Modelo" table="tbl_actualizacion" lazy="false">
+    <id name="Id" type="int">
+      <column name="id"/>
+      <generator class="identity"/>
+    </id>
+    <property name="Contenido" type="string">
+      <column name="contenido"/>
+    </property>
+    <property name="Fecha" type="datetime">
+      <column name="fecha"/>
+    </property>
+  </class>
+</hibernate-mapping>

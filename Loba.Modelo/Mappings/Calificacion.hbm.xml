@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2">
+  <class name="Loba.Modelo.Entidades.Calificacion,Loba.Modelo" table="tbl_calificacion" lazy="false">
+    <id name="Id" type="int">
+      <column name="id"/>
+      <generator class="identity"/>
+    </id>
+    <many-to-one name="Usuario" class="Loba.Modelo.Entidades.Usuario" column="id_usuario"/>
+    <property name="TipoVoto">
+      <column name="tipoVoto"/>
+    </property>
+  </class>
+</hibernate-mapping>

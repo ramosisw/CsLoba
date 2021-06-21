@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2">
+  <class name="Loba.Modelo.Entidades.Categoria,Loba.Modelo" table="tbl_categoria" lazy="false">
+    <id name="Id" type="int">
+      <column name="id"/>
+      <generator class="identity"/>
+    </id>
+    <property name="Nombre" type="string">
+      <column name="nombre"/>
+    </property>
+    <list name="Subcategorias" cascade="all-delete-orphan" table="tbl_subcategoria" lazy="false">
+      <key column="id_categoria"></key>
+      <index column="position"></index>
+      <one-to-many  class="Loba.Modelo.Entidades.Subcategoria" ></one-to-many>
+    </list>
+  </class>
+</hibernate-mapping>

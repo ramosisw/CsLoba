@@ -1,0 +1,48 @@
+﻿@{
+    ViewBag.Title = "Login";
+    Layout = "~/Views/Shared/_Layout_navbar.cshtml";
+}
+@model Loba.Modelo.Entidades.Usuario
+<div class="col-lg-offset-2 col-lg-6 col-sm-offset-1 col-sm-6" id="container-login-main">
+    <div class="lofb">
+        <h3>Loba hace que sea fácil disfrutar de lo que más te importa en el mundo.</h3>
+        <p>La mejor experiencia de Loba Mail, últimas noticias locales, nacionales y globales, finanzas, deportes, música, cine y mucho más. Obtienes más de Internet, más de tu vida.</p>
+    </div>
+</div>
+<div class="col-lg-3  col-sm-4 " id="login-form-main">
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <form action="Login" role="form" method="post">
+                @if(ViewData["p_id"]!=null){
+                    <input type="hidden" value="@ViewData["p_id"]" name="p_id" />
+                }
+                @if (ViewData["titulo"]!=null) {
+                    <input type="hidden" value="@ViewData["titulo"]" name="titulo" />
+                }
+                <a href="~/Home/Index" class="center">
+                    <img src="~/Images/yahoo_answers.png" />
+                </a>
+                @if (ViewData["Error"]!=null) {
+                    <div class="alert alert-danger">@ViewData["Error"]</div>
+                } else if (ViewData["Exito"]!=null) {
+                    <div class="alert alert-success">@ViewData["Exito"]</div>
+                }
+                <input type="text" name="Nombre_usuario" class="form-control" placeholder="ID Loba" required="" autofocus="" value="@Model.Nombre_usuario">
+                <br />
+                <input type="password" name="Contrasena" class="form-control" placeholder="Password" required="" >
+                <!--label class="checkbox">
+                    <input type="checkbox" value="remember-me">
+                    Remember me
+                </label-->
+                <br />
+                <button class="btn btn-lg btn-primary btn-block" type="submit">Inicia sesión</button>
+                <a href="#">No puedo acceder</a><br />
+                <a href="#">Ayuda?</a>
+            </form>
+            <hr />
+            <a class="btn btn-lg btn-success btn-block" href="~/Home/Register">Crear Cuenta</a>
+        </div>
+
+    </div>
+
+</div>

@@ -1,0 +1,65 @@
+﻿@{
+    ViewBag.Title = "Question";
+}
+@model Loba.Modelo.Entidades.Pregunta
+<!-- Contenedor central -->
+<div class="col-md-7 col-lg-7">
+    @if (ViewData["Exito"]!=null) {
+        <div class="alert alert-success">@ViewData["Exito"]
+            <br />
+            @Model.Id
+        </div>
+    }else if(ViewData["Error"]!=null) {
+        <div class="alert alert-warning">@ViewData["Error"]
+            <br />
+        </div>
+    }
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <h3>Cual es tu Pregunta?</h3>
+            <form class="form-horizontal" role="form" action="~/Pregunta/Nueva" method="post">
+                <div class="form-group">
+                    <div class="col-sm-1 col-lg-1">
+                        <img src="@Url.Content(Model.Usuario.Path_imagen)" width="34" height="34" id="yui_3_9_1_13_1397958282095_34">
+                    </div>
+                    <div class="col-sm-11 col-lg-11">
+                        <input  class="form-control" name="Titulo" id="Titulo" placeholder="Escribe aquí tu pregunta..." value="@Model.Titulo"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-11 col-lg-11 col-sm-offset-1 col-lg-offset-1">
+                        <span class="help-block"><strong>Detalles</strong> adicionales (Opcional) Esto te ayudará a obtener mejores respuestas</span>
+                        <textarea class="form-control" rows="15" id="Detalle" name="Descripcion">@Model.Descripcion</textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-11 col-lg-11 col-sm-offset-1 col-lg-offset-1">
+                        <label>Categoria: </label>
+                        @if (Model.Categoria!=null) {
+                            @Html.Action("_Categorias_Question", "Pregunta", new { select= Model.Categoria.Id })
+                            
+                        } else {
+                            @Html.Action("_Categorias_Question", "Pregunta")
+                        }
+                        <br />
+                        <label>Subcategoria:</label>
+                        <section id="subcat_select">
+                            @if (Model.Categoria!=null) {
+                                @Html.Action("_SubCategorias_Question", "Pregunta", new { select= Model.Categoria.Id })    
+                            }
+                        </section>
+
+                    </div>
+                </div>
+                <div class="col-sm-11 col-lg-11 col-sm-offset-1 col-lg-offset-1">
+                    <button class="btn btn-info btn-sm">Preguntar</button>
+                    <a  href="~/Home/Index" class="btn btn-default btn-sm">Cancelar</a>
+                </div>
+            </form>
+
+
+        </div>
+    </div>
+</div>
+<!-- FIN Contenedor central -->
+

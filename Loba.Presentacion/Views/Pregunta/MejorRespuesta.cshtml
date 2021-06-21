@@ -1,0 +1,96 @@
+﻿@{
+    ViewBag.Title = "QuestionView";
+}
+
+@model Loba.Modelo.Entidades.Pregunta
+<!-- Contenedor central -->
+<div class="col-md-7 col-lg-7">
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <div class="media">
+                <a class="pull-left">
+                    <img src="@Url.Content(Model.Usuario.Path_imagen)" width="64" height="64"  />
+                </a>
+                <div class="media-body">
+                    <p>@Model.Descripcion</p>
+                    @foreach (var act in Model.Actualizaciones) {
+                        <p><strong>Actualización: </strong>@act.Contenido</p>
+                    }
+                </div>
+            </div>
+            <div class="media">
+                <a class="pull-left">
+                    <img src="@Url.Content(Model.MejorRespuesta.Respuesta.Usuario.Path_imagen)" width="64" height="64" />
+                </a>
+                <div class="media-body">
+                    <h4 class="media-heading">Mejor Respuesta</h4>
+                    <small><a class="text-info" href="#">@Model.MejorRespuesta.Respuesta.Usuario.Nombre</a> respondio hace 
+                                        @{
+                                            TimeSpan ts = DateTime.Now - Model.MejorRespuesta.Respuesta.Fecha;
+                                            var hace="";
+                                            if (ts.Days>=1) {
+                                                hace=ts.Days.ToString() +" dias";
+                                            } else if (ts.Hours>=1) {
+                                                hace=ts.Hours.ToString() +" hrs";
+                                            } else if (ts.Minutes>=1) {
+                                                hace=ts.Minutes.ToString() +" mins";
+                                            } else {
+                                                hace=ts.Seconds.ToString() + " segs";
+                                            }
+                                        }
+                        @hace
+                    </small>
+                    <p>@Model.MejorRespuesta.Respuesta.Cuerpo</p>
+
+                    <form class="form" action="/Pregunta/MejorRespuesta" method="post" role="form">
+
+                        <input type="hidden" name="r_id" value="@Model.MejorRespuesta.Respuesta.Id">
+                        <input type="hidden" name="p_id" value="@Model.Id">
+                        <h5 class="text-info">Agrega tu Comentario:</h5>
+                        <div class="form-group">
+                            <textarea class="form-control" rows="3" name="comentario">@Model.MejorRespuesta.Comentario</textarea>
+                        </div>
+                        
+                            <label for="valoracion" class="col-sm-2 control-label">Valoracion:</label>
+                            
+                                <select class="form-control" name="valoracion">
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                </select>
+                            
+                            
+                        
+                        <br />
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-info btn-sm">Mejor Respuesta</button>
+                            <a href="~/Pregunta/Index/@Model.Id" class="btn btn-default btn-sm">Cancelar</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- FIN Contenedor central -->
+<!-- contenedor derecho -->
+<div class="col-md-3 col-lg-3">
+    <div class="panel panel-primary">
+        <div class="panel-body bg-primary">
+            <form action="~/Pregunta/Nueva" method="post" role="form">
+                <label>
+                    <h4><span class="glyphicon glyphicon-comment"></span>Haz una Pregunta</h4>
+                </label>
+                <div class="input-group">
+                    <input type="text" class="form-control" name="Titulo" id="Titulo">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="submit">OK!</button>
+                    </span>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- FIN contenedor derecho -->

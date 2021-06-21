@@ -1,0 +1,83 @@
+/* #### MEDIA  min-width:768px */
+@media (min-width:768px) {
+    body {
+        padding-top: 110px;
+    }
+}
+
+/* #### MEDIA  min-width:992px */
+@media (min-width:992px) {
+    body {
+        padding-top: 60px;
+    }
+     #login-form-main,#container-login-main{
+        top: 100px;
+    }
+    #content-full{
+        margin-left: -30px;
+        max-width: 1300px;
+    }
+}
+
+/* #### MEDIA  min-width:1200px */
+@media (min-width:1200px) and (min-height: 600px) {
+    body {
+        padding-top: 60px;
+    }
+    .panel-heading.affix {
+        top: 50px;
+        margin-left: -1px;
+        position: fixed;
+    }
+    .panel.panel-default.affix {
+        top: 50px;
+        position: fixed !important;
+    }
+    .nav.nav-stacked.affix {
+        top: 50px;
+        position: fixed !important;
+    }
+    #login-form-main{
+        top: 100px;
+    }
+    #right-section{
+        /*top: auto !important;*/
+        bottom: 0px !important;
+    }
+}
+@media (max-width:1200) , screen and (max-height: 600px) {
+    .nav.nav-stacked.affix {
+        position: relative !important;
+    }
+    .panel-heading.affix {
+        position: relative !important;
+    }
+    .panel.panel-default.affix {
+        position: relative !important;
+    }
+}
+.col-md-12.col-lg-3>.affix{
+        bottom: 0px !important;
+}
+
+/* CODE CSS */
+.starter-template {
+    padding: 40px 15px;
+    text-align: center;
+}
+.right {
+    float: right !important;
+}
+.scroll {
+    -webkit-box-shadow: 0 0 9px 0 rgba(73, 15, 118, 1) !important;
+    -moz-box-shadow: 0 0 9px 0 rgba(73, 15, 118, 1) !important;
+    box-shadow: 0 0 9px 0 rgba(73, 15, 118, 1) !important;
+    border-bottom: 1px solid #490f76 !important;
+}
+#mejores>tbody>tr>td {
+    font-weight: bold;
+}
+
+body {
+        padding-top: 60px;
+    }

@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2">
+  <class name="Loba.Modelo.Entidades.MejorRespuesta,Loba.Modelo" table="tbl_mejor_respuesta" lazy="false">
+    <id name="Id" type="int">
+      <column name="id"/>
+      <generator class="identity"/>
+    </id>
+    <many-to-one name="Respuesta" class="Loba.Modelo.Entidades.Respuesta" column="id_respuesta"/>
+    <property name="Comentario" type="string">
+      <column name="comentario"/>
+    </property>
+    <property name="Valoracion" type="int">
+      <column name="valoracion"/>
+    </property>
+  </class>
+</hibernate-mapping>

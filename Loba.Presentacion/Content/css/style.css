@@ -1,0 +1,15 @@
+body{
+	padding-top: 80px;
+}
+.scroll-line-down {
+    -webkit-box-shadow: 0 0 9px 0 rgba(73, 15, 118, 1) !important;
+    -moz-box-shadow: 0 0 9px 0 rgba(73, 15, 118, 1) !important;
+    box-shadow: 0 0 9px 0 rgba(73, 15, 118, 1) !important;
+    border-bottom: 1px solid #490f76 !important;
+}
+.right{
+	float: right !important;
+}
+/*ul.nav li.dropdown:hover > ul.dropdown-menu {
+    display: block;    
+}*/

@@ -1,0 +1,68 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+@model Loba.Presentacion.Models.PreguntasModel
+<!-- Contenedor central -->
+<div class="col-md-7 col-lg-7">
+    <div class="panel panel-primary">
+        <div class="panel-heading">Preguntas</div>
+        <div class="panel-body">
+            <ul class="list-group">
+                @foreach (var item in Model.Preguntas) {
+                    <li class="list-group-item">
+                        <h5>
+                            <a href="~/Pregunta/Index/@item.Id" class="text-info">
+                                <strong>@item.Titulo</strong>
+                            </a>
+                            @if (item.Respuestas.Count>0) {
+                                var resp=item.Respuestas.Count()==1?"Respuesta":"Respuestas";
+                                <span>(@item.Respuestas.Count() @resp)</span>
+                            }
+                        </h5>
+
+                        <small style="max-height: 30px;display: block;overflow: hidden;margin-bottom: -15px;">@item.Descripcion</small><br />
+                        <small class="help-block">Pregunta echa por: 
+                            <a href="#" class="text-info">@item.Usuario.Nombre_usuario</a> en 
+                            <a href="~/Home/Index?subcategoria=@item.Subcategoria.Id" class="text-info">@item.Subcategoria.Nombre</a>
+                            hace 
+                            @{
+                            TimeSpan ts = DateTime.Now - item.Fecha;
+                            var hace="";
+                            if (ts.Days>=1) {
+                                hace=ts.Days.ToString() + (ts.Days==1?" dia":" dias");
+                            } else if (ts.Hours>=1) {
+                                hace=ts.Hours.ToString() + (ts.Hours==1?" hr.":" hrs");
+                            } else if (ts.Minutes>=1) {
+                                hace=ts.Minutes.ToString() + (ts.Minutes==1?" min.":" mins");
+                            } else {
+                                hace=ts.Seconds.ToString() + (ts.Seconds==1?" segundo":" segundos");
+                            }
+                            }
+                            @hace
+                        </small>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- FIN Contenedor central -->
+<!-- contenedor derecho -->
+<div class="col-md-3 col-lg-3">
+    <div class="panel panel-primary">
+        <div class="panel-body bg-primary">
+            <form action="~/Pregunta/Nueva" method="post" role="form">
+                <label>
+                    <h4><span class="glyphicon glyphicon-comment"></span>Haz una Pregunta</h4>
+                </label>
+                <div class="input-group">
+                    <input type="text" class="form-control" name="Titulo" id="Titulo">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="submit">OK!</button>
+                    </span>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- FIN contenedor derecho -->
